@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.example.sacramentounofficialcowbell.ShakeDetector.OnShakeListener;
+
 public class MainActivity extends AppCompatActivity {
     private ImageButton imageButton;
     private SensorManager mSensorManager;
@@ -35,10 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mShakeDetector = new ShakeDetector(new ShakeDetector.OnShakeListener(){
-            public void onShake(){
-                mediaPlayer.start();
-            }
+        mShakeDetector = new ShakeDetector(new OnShakeListener(){
+            public void onShake(){mediaPlayer.start();}
         });
 
 
