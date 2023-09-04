@@ -16,8 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
-
-
+    private MediaPlayer mediaPlayer;
 
 
 
@@ -27,21 +26,31 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         imageButton = findViewById(R.id.imageButton);
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.cowbell);
+        //MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.cowbell);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (mediaPlayer == null){
+                    mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.cowbell);
+                }
                 mediaPlayer.start();
             }
         });
 
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+//        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+//        mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         mShakeDetector = new ShakeDetector(new OnShakeListener(){
-            public void onShake(){mediaPlayer.start();}
+            public void onShake(){
+                if (mediaPlayer == null){
+                    mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.cowbell);
+                }
+                mediaPlayer.start();
+            }
         });
 
-
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
     }
 }
